@@ -1,6 +1,6 @@
 import { dirname, relative } from '@stoplight/path';
 import { minimatch } from './utils/minimatch';
-import { Rule, StringifiedRule } from './rule/rule';
+import { Rule, StringifiedRule } from './rule';
 import {
   FileRulesetSeverityDefinition,
   ParserOptions,
@@ -32,7 +32,7 @@ export type StringifiedRuleset = {
   extends: StringifiedRuleset[] | null;
   source: string | null;
   aliases: RulesetAliasesDefinition | null;
-  formats: FormatsSet | null;
+  formats: string[] | null;
   rules: Record<string, StringifiedRule>;
   overrides: RulesetOverridesDefinition | null;
   parserOptions: ParserOptions;
@@ -317,7 +317,7 @@ export class Ruleset {
       extends: this.extends,
       source: this.source,
       aliases: this.aliases,
-      formats: this.formats.size === 0 ? null : this.formats,
+      formats: this.formats.size === 0 ? null : this.formats.toJSON(),
       rules: this.rules,
       overrides: this.overrides,
       parserOptions: this.parserOptions,

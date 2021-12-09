@@ -4,17 +4,12 @@ import { dirname, relative } from '@stoplight/path';
 import { pathToPointer } from '@stoplight/json';
 import { printValue } from '@stoplight/spectral-runtime';
 
-import { getDiagnosticSeverity, DEFAULT_SEVERITY_LEVEL } from '../utils/severity';
-import { Ruleset } from '../ruleset';
-import { Format } from '../format';
-import type {
-  HumanReadableDiagnosticSeverity,
-  IRuleThen,
-  RuleDefinition,
-  RulesetScopedAliasDefinition,
-} from '../types';
-import { minimatch } from '../utils/minimatch';
-import { FormatsSet } from '../utils/formatsSet';
+import { getDiagnosticSeverity, DEFAULT_SEVERITY_LEVEL } from './utils/severity';
+import type { Ruleset } from './ruleset';
+import type { Format } from './format';
+import type { HumanReadableDiagnosticSeverity, IRuleThen, RuleDefinition, RulesetScopedAliasDefinition } from './types';
+import { minimatch } from './utils/minimatch';
+import { FormatsSet } from './utils/formatsSet';
 
 const ALIAS = /^#([A-Za-z0-9_-]+)/;
 
@@ -33,7 +28,7 @@ export interface IRule {
 
 export type StringifiedRule = Omit<IRule, 'formats' | 'then'> & {
   name: string;
-  formats: FormatsSet | null;
+  formats: string[] | null;
   then: (Pick<IRuleThen, 'field'> & { function: string; functionOptions?: string })[];
   owner: number;
 };
@@ -243,7 +238,7 @@ export class Rule implements IRule {
       documentationUrl: this.documentationUrl,
       severity: this.severity,
       resolved: this.resolved,
-      formats: this.formats,
+      formats: this.formats as null | ReturnType<FormatsSet['toJSON']>,
       then: this.then.map(then => ({
         ...then.function,
         function: then.function.name,

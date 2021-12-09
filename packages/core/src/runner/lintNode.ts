@@ -3,10 +3,10 @@ import { decodeSegmentFragment, getClosestJsonPath, printPath, PrintStyle } from
 import { get } from 'lodash';
 
 import { Document } from '../document';
-import { IFunctionResult, IGivenNode, RulesetFunctionContext } from '../types';
-import { IRunnerInternalContext } from './types';
+import type { IFunctionResult, IGivenNode, RulesetFunctionContext } from '../types';
+import type { IRunnerInternalContext } from './types';
 import { getLintTargets, MessageVars, message } from './utils';
-import { Rule } from '../ruleset/rule/rule';
+import type { Rule } from '../ruleset/rule';
 
 export const lintNode = (context: IRunnerInternalContext, node: IGivenNode, rule: Rule): void => {
   const fnContext: RulesetFunctionContext = {
